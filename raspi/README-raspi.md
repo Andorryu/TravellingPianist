@@ -35,5 +35,7 @@ cd raspi/react
 ### Install project dependecies located in package.json
 npm install
 
+### Launch the Web Server
+npm start
 
 

@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_restful import Api, Resource
-from flask_cors import CORS, cross_origin
+from flask_restful import Api, Resource, reqparse
+from flask_cors import CORS
 
 import os
 
@@ -28,7 +28,6 @@ def update_dict():
 app = Flask(__name__)
 api = Api(app)
 cors = CORS(app)
-# app.config['CORS_HEADERS'] = "Content-Type"
     
 # endpoint 1 -> start up musescore page via selenium call
 class StartUp(Resource):
@@ -39,18 +38,25 @@ class StartUp(Resource):
         return "", 201
     
 # endpoint 2 -> pulling local XML files for search bar
-class Search(Resource):
-    def get(self, song_name):
-        update_dict()
-        filtered_dict = {key: value for key, value in songs_dict.items() if song_name.lower() in value.lower()}
+search_get_args = reqparse.RequestParser()
+search_get_args.add_argument("search", type=str, help="Flask search not valid...")
 
+class Search(Resource):
+    def put(self):
+        update_dict()
+
+        args = search_get_args.parse_args()
+        song_name = args["search"]
+        
+        # probably will have to update searching capabilities later... only looks for similar inline letters
+        filtered_dict = {key: value for key, value in songs_dict.items() if song_name.lower() in value.lower().split(".")[0]}
         
         return filtered_dict, 200
 
 
 
 api.add_resource(StartUp, "/startup")
-api.add_resource(Search, "/search/<string:song_name>")
+api.add_resource(Search, "/search")
 
 if __name__ == "__main__":
     # change debug to false once ready for production

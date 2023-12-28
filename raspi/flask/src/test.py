@@ -4,6 +4,7 @@ BASE="http://127.0.0.1:5000/"
 
 
 # response = requests.get(BASE + "startup")
-response = requests.get(BASE + "search/hotline")
+value = "S"
+response = requests.get(BASE + "search", json={"search": value})
 
 print(response.json())

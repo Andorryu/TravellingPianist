@@ -5,6 +5,7 @@ bcrypt==3.2.0
 blinker==1.7.0
 Brlapi==0.8.3
 certifi==2023.11.17
+cffi==1.16.0
 chardet==4.0.0
 click==8.1.7
 colorama==0.4.4
@@ -19,6 +20,7 @@ duplicity==0.8.21
 exceptiongroup==1.2.0
 fasteners==0.14.1
 Flask==3.0.0
+Flask-Cors==4.0.0
 Flask-RESTful==0.3.10
 future==0.18.2
 gyp==0.1
@@ -51,6 +53,7 @@ Pillow==9.0.1
 protobuf==3.12.4
 ptyprocess==0.7.0
 pycairo==1.20.1
+pycparser==2.21
 pycups==2.0.1
 PyGObject==3.42.1
 PyJWT==2.3.0

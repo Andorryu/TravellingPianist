@@ -1,0 +1,43 @@
+body {
+  background: linear-gradient(to right, #FFA505, #FFFB05);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 150px 100px 200px minmax(200px, 250px);
+  grid-row-gap: 10px;
+  grid-column-gap: none;
+  grid-template-areas:
+    "logo"
+    "search-bar"
+    "select-song"
+    "buttons"
+    "animation";
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, .75);
+  border: 2px solid white;
+}
+
+.grid-item-1 {
+  overflow: hidden;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.grid-item-1 > img {
+  height: 70%;
+  width: minmax(20%, 30%);
+  margin-left: 2%;
+  border: 2px solid black;
+}
+
+.grid-item-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
+}

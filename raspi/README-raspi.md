@@ -34,3 +34,24 @@ npm install
 
 
 
+# Installing Flask Project on Pi OS
+
+## 1. Install Project Dependencies
+
+### Activate virtual enviroment
+sudo apt install python3-venv
+source bin/activate
+
+### Download required python packages
+pip install -r requirements.txt
+
+
+## 2. Install ChromeDriver
+
+### Download chromedriver from 
+https://googlechromelabs.github.io/chrome-for-testing/
+
+### Extract executable and place in /usr/bin/chromedriver
+sudo mv chromedriver /usr/bin/chromedriver
+
+

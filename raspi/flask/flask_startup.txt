@@ -1,0 +1,8 @@
+# activate virtual enviroment, may require venv installation
+sudo apt install python3-venv
+source bin/activate
+
+# download required packages from requirements.txt file
+pip install -r requirements.txt
+
+# install chromedriver and place in /usr/bin/chromedriver

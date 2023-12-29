@@ -21,11 +21,6 @@ body {
     "animation";
 }
 
-.grid-item {
-  background-color: rgba(255, 255, 255, .75);
-  border: 2px solid white;
-}
-
 .grid-item-1 {
   overflow: hidden;
   display: flex;
@@ -38,4 +33,8 @@ body {
   width: minmax(20%, 30%);
   margin-left: 2%;
   border: 2px solid black;
+}
+
+.grid-item-6 {
+  margin-left: auto;
 }

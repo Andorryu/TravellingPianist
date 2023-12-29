@@ -1,5 +1,6 @@
 import ControlButtons from './components/ControlButtons';
 import SearchBar from './components/SearchBar';
+import Animation from './components/Animation';
 import { useState } from "react";
 
 import './App.css';
@@ -17,16 +18,17 @@ function App() {
 
   return (
     <div className="grid-container">
-      <div className="grid-item grid-item-1">
+      <div className="grid-item-1">
         <img src={logo} alt="Traveling Pianst Logo"></img>
       </div>
       <SearchBar setSelected={setSelected} />
-      <div className="grid-item grid-item-3">
+      <div className="grid-item-3">
         <div>{selected}</div>
         <div>uploaded check/X</div>
       </div>
       <ControlButtons selected={selected} setSelected={setSelected}/>
-      <div className="grid-item grid-item-5">animation</div>
+      <Animation />
+      <div className="grid-item-6">&copy; TEAM PIANO</div>
     </div>
   );
 }

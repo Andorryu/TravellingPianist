@@ -55,3 +55,21 @@ https://googlechromelabs.github.io/chrome-for-testing/
 sudo mv chromedriver /usr/bin/chromedriver
 
 
+# Running the "Servers"
+
+## 1. Booting React
+
+### Launch the local react web app from its project folder
+npm start
+
+
+### 2. Booting Flask
+
+### Launch the local flash api from its project folder
+python3 src/main.py
+
+
+
+
+
+

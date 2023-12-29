@@ -8,7 +8,7 @@ export default function SearchBar({setSelected}) {
 
     const handleChange = (value) => {
         setInput(value)
-        if (value != "") {
+        if (value !== "") {
             fetchData(value);
         } else {
             setResults([]);

@@ -1,19 +1,15 @@
-// import ControlButton from './components/ControlButton';
+import ControlButtons from './components/ControlButtons';
 import SearchBar from './components/SearchBar';
-import { useReducer, useState } from "react";
+import { useState } from "react";
 
 import './App.css';
 import logo from "./images/logo_1.jpg";
-import animation from "./images/stream.jpg";
+// import animation from "./images/stream.jpg";
 
 
-export const ACTIONS = {
-  // for button uses?
-}
+
 
 function App() {
-  // remove for reducer soon
-  const dispatch = [];
 
   const [selected, setSelected] = useState("");
 
@@ -29,12 +25,7 @@ function App() {
         <div>{selected}</div>
         <div>uploaded check/X</div>
       </div>
-      <div className="grid-item grid-item-4">
-        {/* <ControlButton label="Upload" dispatch={dispatch} />
-        <ControlButton label="Play" dispatch={dispatch} />
-        <ControlButton label="Reset" dispatch={dispatch} /> */}
-        buttons
-      </div>
+      <ControlButtons selected={selected} setSelected={setSelected}/>
       <div className="grid-item grid-item-5">animation</div>
     </div>
   );

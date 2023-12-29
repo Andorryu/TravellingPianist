@@ -1,3 +1,8 @@
+* {
+  padding: 0px;
+  font-family: Helvetica, sans-serif;
+}
+
 body {
   background: linear-gradient(to right, #FFA505, #FFFB05);
 }
@@ -40,4 +45,7 @@ body {
   flex-direction: column;
   align-items: center;
   min-width: 200px;
+  /* background-color: grey; */
+  position: relative;
+  /* overflow: hidden; */
 }

@@ -1,5 +1,6 @@
 import "./SearchBar.css";
 import { useState } from "react";
+import { FaSearch } from "react-icons/fa"
 
 export default function SearchBar({setSelected}) {
 
@@ -41,15 +42,18 @@ export default function SearchBar({setSelected}) {
 
     
     return (
-        <div className="grid-item grid-item-2">
-            <div className="search-inner">
-                <input type='text' value={input} onChange={(e) => handleChange(e.target.value)} />
+        <div className="grid-item-2">
+            <div className="input-container">
+                <FaSearch id="search-icon" />
+                <input type='text' placeholder="Type to search..." value={input} onChange={(e) => handleChange(e.target.value)} />
+            </div>
+            <div className="button-container">
                 <button onClick={() => handleSelectButton(input)}>Select</button>
             </div>
-            <div className="dropdown">
+            <div className="results-list">
                 {   
                     results.map((result, id) => {
-                        return <div onClick={() => handleSelectDropdown(result.name)} key={id}>{result.name}</div>
+                        return <div className="result-individual" onClick={() => handleSelectDropdown(result.name)} key={id}>{result.name}</div>
                     })
                 }
             </div>

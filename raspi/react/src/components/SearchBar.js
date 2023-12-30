@@ -5,19 +5,24 @@ import { FaSearch } from "react-icons/fa"
 export default function SearchBar({setSelected}) {
 
     const [input, setInput] = useState('');
+    const [showresults, setShowresults] = useState(true);
     const [results, setResults] = useState([]);
 
     const handleChange = (value) => {
-        setInput(value)
+        setInput(value);
         if (value !== "") {
             fetchData(value);
+            setShowresults(true);
         } else {
             setResults([]);
+            setShowresults(false);
         }
     }
 
     const handleSelectButton = (selectTerm) => {
         setSelected(selectTerm);
+        setShowresults(false);
+        // setInput('');
     }
 
     const handleSelectDropdown = (dropdownTerm) => {
@@ -50,12 +55,20 @@ export default function SearchBar({setSelected}) {
             <div className="button-container">
                 <button onClick={() => handleSelectButton(input)}>Select</button>
             </div>
-            <div className="results-list">
-                {   
-                    results.map((result, id) => {
-                        return <div className="result-individual" onClick={() => handleSelectDropdown(result.name)} key={id}>{result.name}</div>
-                    })
-                }
+            <div className="results-container">
+                {showresults && (
+                    <div className="results-list">
+                        {results.map((result, id) => (
+                            <div
+                                className="result-individual"
+                                onClick={() => handleSelectDropdown(result.name)}
+                                key={id}
+                            >
+                                {result.name}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )

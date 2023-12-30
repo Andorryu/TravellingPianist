@@ -10,7 +10,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 150px 100px 200px minmax(200px, 250px);
+  grid-template-rows: 100px 150px 100px 200px minmax(200px, 240px);
   grid-row-gap: 10px;
   grid-column-gap: none;
   grid-template-areas:
@@ -33,7 +33,7 @@ body {
   height: 70%;
   width: 400px;
   margin-left: 2%;
-  border: 2px solid black;
+  /* border: 2px solid black; */
   border-radius: 10px;
   box-shadow: 0px 0px 8px #ddd;
 }

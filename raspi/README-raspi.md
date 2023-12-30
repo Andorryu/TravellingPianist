@@ -74,6 +74,11 @@ npm start
 python3 src/main.py
 
 
+### autorun dependencies
+sudo apt-get install xdotool
+
+
+
 
 
 

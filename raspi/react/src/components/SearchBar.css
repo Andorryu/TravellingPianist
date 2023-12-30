@@ -5,6 +5,7 @@
   /* background-color: rgba(255, 255, 255, .75);
   border: 2px solid white; */
   min-width: 400px;
+  margin-top: 40px;
 }
 
 #search-icon {
@@ -60,16 +61,20 @@
   border-radius: inherit; */
 }
 
+.results-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .results-list {
+  z-index: 10;
   background-color: white;
   margin-left: 2%;
   width: 96%;
   border-radius: 10px;
   box-shadow: 0px 0px 8px #ddd;
-  display: flex;
-  flex-direction: column;
-  max-height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  max-height: 500px;
 }
 
 .result-individual {

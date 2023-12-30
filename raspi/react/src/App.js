@@ -23,8 +23,8 @@ function App() {
       </div>
       <SearchBar setSelected={setSelected} />
       <div className="grid-item-3">
-        <div>{selected}</div>
-        <div>uploaded check/X</div>
+        <div className="selected-title">Selected Song:</div>
+        <div className="selected-container">{selected}</div>
       </div>
       <ControlButtons selected={selected} setSelected={setSelected}/>
       <Animation />

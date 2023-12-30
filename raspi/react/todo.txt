@@ -1,2 +1,4 @@
-- fix search bar content overflow so it expands outside of its parent (react) 
+- fix search bar content overflow so it expands outside of its parent (react) !!!!!!!
+    ^ `muy dificil`
+- don't render search dropdown if nothing is input
 - add better search filtering algorithm in backend (flask)

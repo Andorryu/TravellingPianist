@@ -102,21 +102,27 @@ export default function ControlButtons({selected, setSelected}) {
     
 
     return (
-        <div className="grid-item grid-item-4">
-            <div className="upload-container">
-                <button className="upload-button" onClick={() => fetchUpload(selected)}>Upload</button>
-                <div className="status-label">Status</div>
-                <div className="status-upload" style={uploadstyle}>{uploadstatus}</div>
+        <div className="grid-item-4">
+            <div className="control-container">
+                <button className="control-button" onClick={() => fetchUpload(selected)}>Upload</button>
+                <div className="status-container">
+                    <div className="status-label">Status</div>
+                    <div className="status-upload" style={uploadstyle}>{uploadstatus}</div>
+                </div>
             </div>
-            <div className="play-container">
-                <button className="play-button" onClick={() => handlePlay()}>Play</button>
-                <div className="status-label">Status</div>
-                <div className="play-upload" style={playstyle}>{playstatus}</div>
+            <div className="control-container">
+                <button className="control-button" onClick={() => handlePlay()}>Play</button>
+                <div className="status-container">
+                    <div className="status-label">Status</div>
+                    <div className="status-play" style={playstyle}>{playstatus}</div>
+                </div>
             </div>
-            <div className="reset-container">
-                <button className="reset-button" onClick={() => fetchReset()}>Reset</button>
-                <div className="status-label">Status</div>
-                <div className="status-reset" style={resetstyle}>{resetstatus}</div>
+            <div className="control-container">
+                <button className="control-button" onClick={() => fetchReset()}>Reset</button>
+                <div className="status-container">
+                    <div className="status-label">Status</div>
+                    <div className="status-reset" style={resetstyle}>{resetstatus}</div>
+                </div>
             </div>
         </div>
     )

@@ -1,76 +1,75 @@
-# Installing React Project on Pi OS
+# Installing React (UI) onto Pi OS
 
-## 1. Project Dependencies
+## 1. React Dependencies
 
 ### Update Kernel
-sudo apt update
+`sudo apt update`
 
 ### Install Git for version control and cloning
-sudo apt install git
+`sudo apt install git`
 
 ### Install Node.js
-sudo apt install nodejs
+`sudo apt install nodejs`
 
 ### Install npm (Node Package Manager)
-sudo apt install npm
+`sudo apt install npm`
 
 ### Install NVM (Node Version Manager)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 
 ### Commit NVM Install
-source ~/.bashrc
+`source ~/.bashrc`
 
 
-## 2. Launching Project
+## 2. React Setup
 
-### Pull from remote repository 
-git clone https://github.com/Andorryu/TravellingPianist.git
+### Pull from remote repository
+`git clone https://github.com/Andorryu/TravellingPianist.git`
 
-### Navigate to project repository
-cd raspi/react
+### Navigate to react project repository
+`cd TravellingPianist/raspi/react`
 
 ### Install project dependecies located in package.json
-npm install
+`npm install`
 
 
 
-# Installing Flask Project on Pi OS
+# Installing Flask (API) onto Pi OS
 
-## 1. Install Project Dependencies
+## 1. Flask Dependencies
 
-### Activate virtual enviroment
-sudo apt install python3-venv
-source bin/activate
+### Navigate to flask project repository
+`cd TravellingPianist/raspi/flask`
 
-### Download required python packages
-pip install -r requirements.txt
+### Install project dependencies located in requirements.txt
+`pip install -r requirements.txt`
 
 
 ## 2. Install ChromeDriver
 
 ### Download chromedriver from 
-https://googlechromelabs.github.io/chrome-for-testing/
+`https://googlechromelabs.github.io/chrome-for-testing/`
 
 ### Extract executable and place in /usr/bin/chromedriver
-sudo mv chromedriver /usr/bin/chromedriver
+`sudo mv chromedriver /usr/bin/chromedriver`
 
 
-# Running the "Servers"
+# Booting the Project Servers
 
-## 1. Booting React
+## 1. Launching react frontend user interface
 
 ### Launch the local react web app from its project folder
-npm start
+`cd TravellingPianist/raspi/react`
+`npm start`
 
 
-### 2. Booting Flask
+### 2. Launching flask backend API
 
-### Launch the local flash api from its project folder
-python3 src/main.py
+### (In a seperate terminal) Launch the local flash api from its project folder
+`cd TravellingPianist/raspi/flask`
+`python3 src/main.py`
 
 
-### autorun dependencies
-sudo apt-get install xdotool
 
 
 

@@ -36,7 +36,7 @@ sudo apt install curl
 `npm install`
 
 ### Launch the Web Server
-npm start
+`npm start`
 
 
 # Installing Flask (API) onto Pi OS

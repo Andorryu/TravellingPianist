@@ -45,8 +45,8 @@ class ChromeDriver:
         driver.set_window_size(window_width, 1028)
         driver.set_window_position(0, 0)
 
-        # finding hotline bling as example COMMENT OUT DURING PRODUCTION
-        search_bar = driver.find_element(By.ID, "edit-text")
-        search_bar.send_keys("hotline bling")
-        search_bar.send_keys(Keys.RETURN)
+        # # finding hotline bling as example COMMENT OUT DURING PRODUCTION
+        # search_bar = driver.find_element(By.ID, "edit-text")
+        # search_bar.send_keys("hotline bling")
+        # search_bar.send_keys(Keys.RETURN)
 

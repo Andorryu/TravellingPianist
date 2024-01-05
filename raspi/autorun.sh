@@ -1,10 +1,15 @@
 #!/bin/bash
 
+# WORK IN PROGRESS ----> PROBABLY SHOULD BE PUSHED TO A MAKEFILE LATER
+# # autorun dependencies
+# sudo apt-get install xdotool
+
 # RUN VIA THE FOLLOWING COMMAND: ./autorun.sh
 
 gnome-terminal -- bash -c "cd /home/will/piano/TravellingPianist/raspi/flask/; python3 src/main.py; exec bash"
 
 gnome-terminal -- bash -c "cd /home/will/piano/TravellingPianist/raspi/react/; npm start; exec bash"
+
 
 wait 3
 
@@ -20,6 +25,7 @@ else
     echo "Chrome window not found"
 fi
 
-# # starting musescore side bar
+# starting musescore side bar
 curl -s "http://127.0.0.1:5000/startup"
+
 

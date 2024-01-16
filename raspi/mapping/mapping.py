@@ -1,17 +1,25 @@
 
 import mido
 
-# define type aliases
-key_event = dict[str, int]
-score = list[key_event]
+class NoteEvent:
+    def __init__(self, channel, note, velocity, time) -> None:
+        self.note = note
+        self.velocity = velocity
+        self.time = time
+        self.channel = channel
+    
+    def __str__(self):
+        return f"channel = {self.channel}, note = {' '*(3-len(str(self.note)))}{self.note}, velocity = {' '*(3-len(str(self.velocity)))}{self.velocity}, time = {self.time}"
+
+timeline = list[NoteEvent]
 
 """
     file: string that represents the relative file location of the midi file
     returns a score that represents the data to be transmitted to the arduino
 """
-def Map(file) -> score:
+def Map(file) -> timeline:
     raw_data = mido.MidiFile(file)
-    mapping: score = []
+    mapping: timeline = []
     delta_time: int = 0
 
     # for every midi message
@@ -29,38 +37,34 @@ def Map(file) -> score:
         msg_vel = msg_dict["velocity"]
         msg_time = msg_dict["time"] + delta_time
 
-        new_key_event: key_event = {
-            #"type": msg_type,
-            #"channel": msg_chan,
-            "note": msg_note,
-            "velocity": msg_vel,
-            "time": msg_time
-        }
+        new_note_event: NoteEvent = NoteEvent(msg_chan, msg_note, msg_vel, msg_time)
 
         delta_time = 0
-        mapping.append(new_key_event)
+        mapping.append(new_note_event)
 
     return mapping
-
 
 # TESTING -------------------------------------------------------------------------------------------------
 
 import sys
-import pysine
 import math
 import time
+from scamp import *
 
-def play_song(mapping: score):
+def play_song(mapping: timeline):
+    s = Session()
+    piano = s.new_part("piano")
+    chord_queue = []
     for event in mapping:
-        if event["velocity"] > 0:
-            pysine.sine(2**((event["note"]-21)/12)*27.5, event["time"])
-        else:
-            time.sleep(event["time"])
+        if event["time"] > 0:
+            for note in chord_queue:
+                piano.play_note(note["note"], note["velocity"]/127, event["time"], blocking=False)
+            chord_queue = []
+        chord_queue.append(event)
 
 if __name__ == "__main__":
-    
 
-    # interpret command
+    # interpret command-line
     if len(sys.argv) != 2:
         print(f"Command format: python3 mapping.py [path-to-file]")
 
@@ -69,13 +73,13 @@ if __name__ == "__main__":
     mapping = Map(sys.argv[1])
     times = []
     for msg in mapping:
-        if msg["time"] != 0:
-            times.append(msg["time"])
+        if msg.time != 0:
+            times.append(msg.time)
         file.write(str(msg) + "\n")
     file.close()
 
     print(f"Fastest pressing time: {min(times)}")
 
     print("Playing song...")
-    play_song(mapping)
+    #play_song(mapping)
 

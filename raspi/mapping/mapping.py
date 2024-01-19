@@ -49,18 +49,26 @@ def Map(file) -> timeline:
 import sys
 import math
 import time
+import os
+import signal
 from scamp import *
 
 def play_song(mapping: timeline):
     s = Session()
     piano = s.new_part("piano")
-    chord_queue = []
+    proc_dict = {}
     for event in mapping:
-        if event["time"] > 0:
-            for note in chord_queue:
-                piano.play_note(note["note"], note["velocity"]/127, event["time"], blocking=False)
-            chord_queue = []
-        chord_queue.append(event)
+        if event.velocity > 0:
+            pid = os.fork()
+            if pid == 0:
+                piano.play_note(event.note, event.velocity/127, 100)
+            else:
+                # cache pid
+                proc_dict[event.note] = pid
+        else:
+            for note, pid in proc_dict:
+                if note == event.note:
+                    os.kill(pid, signal.SIGTERM)
 
 if __name__ == "__main__":
 
@@ -81,5 +89,5 @@ if __name__ == "__main__":
     print(f"Fastest pressing time: {min(times)}")
 
     print("Playing song...")
-    #play_song(mapping)
+    play_song(mapping)
 

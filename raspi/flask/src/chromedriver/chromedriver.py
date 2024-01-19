@@ -6,6 +6,8 @@ from selenium.webdriver.chrome.options import Options
 # from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import configparser
+
 class ChromeDriver:
     def __init__(self):
         from selenium import webdriver
@@ -16,7 +18,14 @@ class ChromeDriver:
         # from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
 
+        config = configparser.ConfigParser()
+        config.read('home/will/Desktop/config.ini')
+        self.username = config['credentials']['username']
+        self.password = config['credentials']['password']
+
+
     def run(self):
+
         chrome_options = Options()
         chrome_options.add_experimental_option("detach", True)
 
@@ -33,8 +42,8 @@ class ChromeDriver:
         username_feild = driver.find_element(By.ID, "username")
         password_feild = driver.find_element(By.ID, "password")
 
-        username_feild.send_keys("williampowers@ku.edu")
-        password_feild.send_keys("206035Wl$x")
+        username_feild.send_keys(self.username)
+        password_feild.send_keys(self.password)
         password_feild.send_keys(Keys.RETURN)
 
         window_size = driver.get_window_size()

@@ -3,10 +3,10 @@ import mido
 
 class NoteEvent:
     def __init__(self, channel, note, velocity, time) -> None:
-        self.note = note
-        self.velocity = velocity
-        self.time = time
-        self.channel = channel
+        self.note: int = note
+        self.velocity: int = velocity
+        self.time: float = time
+        self.channel: int = channel
     
     def __str__(self):
         return f"channel = {self.channel}, note = {' '*(3-len(str(self.note)))}{self.note}, velocity = {' '*(3-len(str(self.velocity)))}{self.velocity}, time = {self.time}"
@@ -56,22 +56,18 @@ from scamp import *
 def play_song(mapping: timeline):
     s = Session()
     piano = s.new_part("piano")
-    proc_dict = {}
+    proc_dict: dict[int, Clock] = {}
     for event in mapping:
         if event.time > 0:
             time.sleep(event.time)
         if event.velocity > 0:
-            pid = os.fork()
-            if pid == 0:
-                piano.play_note(event.note, event.velocity/127, 2)
-                break
-            else:
-                # cache pid
-                proc_dict[event.note] = pid
+            clock = fork(piano.play_note, [event.note, event.velocity/127, 100])
+            # cache clock
+            proc_dict[event.note] = clock
         else:
             for note in proc_dict:
                 if note == event.note:
-                    os.kill(proc_dict[note], signal.SIGTERM)
+                    proc_dict[note].kill()
 
 if __name__ == "__main__":
 
@@ -93,4 +89,3 @@ if __name__ == "__main__":
 
     print("Playing song...")
     play_song(mapping)
-

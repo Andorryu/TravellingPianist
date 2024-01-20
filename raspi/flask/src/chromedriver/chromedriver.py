@@ -19,7 +19,7 @@ class ChromeDriver:
         from selenium.webdriver.support import expected_conditions as EC
 
         config = configparser.ConfigParser()
-        config.read('home/will/Desktop/config.ini')
+        config.read('/home/will/Desktop/config.ini')
         self.username = config['credentials']['username']
         self.password = config['credentials']['password']
 

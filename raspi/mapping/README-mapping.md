@@ -1,5 +1,9 @@
 # install dependencies to run Mapping.py
 pip install mido
+# dependecies for running unit test
+sudo apt install fluidsynth
+pip install scamp
+
 
 # Running Mapping.py
 ## (this will only run the code in 'if __name__ == "__main__": block')

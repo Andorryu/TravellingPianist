@@ -23,4 +23,4 @@ api.add_resource(Reset, "/reset")
 
 if __name__ == "__main__":
     # change debug to false once ready for production
-    app.run(debug=True)
+    app.run(debug=True, host="127.0.0.1", port="5000")

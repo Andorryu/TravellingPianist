@@ -58,17 +58,20 @@ def play_song(mapping: timeline):
     piano = s.new_part("piano")
     proc_dict = {}
     for event in mapping:
+        if event.time > 0:
+            time.sleep(event.time)
         if event.velocity > 0:
             pid = os.fork()
             if pid == 0:
-                piano.play_note(event.note, event.velocity/127, 100)
+                piano.play_note(event.note, event.velocity/127, 2)
+                break
             else:
                 # cache pid
                 proc_dict[event.note] = pid
         else:
-            for note, pid in proc_dict:
+            for note in proc_dict:
                 if note == event.note:
-                    os.kill(pid, signal.SIGTERM)
+                    os.kill(proc_dict[note], signal.SIGTERM)
 
 if __name__ == "__main__":
 

@@ -1,16 +1,7 @@
 
 import mido
 
-class NoteEvent:
-    def __init__(self, note, velocity, time) -> None:
-        self.note: int = note
-        self.velocity: int = velocity
-        self.time: float = time
-    
-    def __str__(self):
-        return f"note = {' '*(3-len(str(self.note)))}{self.note}, velocity = {' '*(3-len(str(self.velocity)))}{self.velocity}, time = {self.time}"
-
-timeline = list[NoteEvent]
+timeline = list[dict]
 
 """
     file: string that represents the relative file location of the midi file
@@ -35,7 +26,11 @@ def Map(file) -> timeline:
         msg_vel = msg_dict["velocity"]
         msg_time = msg_dict["time"] + delta_time
 
-        new_note_event: NoteEvent = NoteEvent(msg_note, msg_vel, msg_time)
+        new_note_event: dict = {
+            "note": msg_note,
+            "velocity": msg_vel,
+            "time": msg_time
+        }
 
         delta_time = 0
         mapping.append(new_note_event)
@@ -56,15 +51,15 @@ def play_song(mapping: timeline):
     piano = s.new_part("piano")
     proc_dict: dict[int, Clock] = {}
     for event in mapping:
-        if event.time > 0:
-            time.sleep(event.time)
-        if event.velocity > 0:
-            clock = fork(piano.play_note, [event.note, event.velocity/127, 100])
+        if event["time"] > 0:
+            time.sleep(event["time"])
+        if event["velocity"] > 0:
+            clock = fork(piano.play_note, [event["note"], event["velocity"]/127, 100])
             # cache clock
-            proc_dict[event.note] = clock
+            proc_dict[event["note"]] = clock
         else:
             for note in proc_dict:
-                if note == event.note:
+                if note == event["note"]:
                     proc_dict[note].kill()
 
 if __name__ == "__main__":

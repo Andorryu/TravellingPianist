@@ -85,3 +85,4 @@ if __name__ == "__main__":
     # play song thru unit test function
     print("Playing song...")
     play_song(mapping)
+

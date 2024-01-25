@@ -25,10 +25,10 @@ BASE="http://127.0.0.1:5000/"
 
 
 ##################################################################
-# # testing endpoint 3 -> "/upload"
-# value = "S.O.S..mxl"
-# response = requests.put(BASE + "upload", json={"name": value})
-# print(response.json())
+# testing endpoint 3 -> "/upload"
+value = "boh-rap.mid"
+response = requests.put(BASE + "upload", json={"name": value})
+print(response.json())
 
 
 

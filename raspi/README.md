@@ -75,6 +75,16 @@ sudo apt install curl
 `python3 src/main.py`
 
 
+# Timing Problems
+`sudo apt install ntpd`
+`/etc/init.d/ntp stop`
+`sudo apt install raspi-config`
+`sudo raspi-config`
+`date -s "29 Jan 2023 14:15:00"`
+`/etc/init.d/ntp start`
+`sudo reboot`
+
+
 
 
 

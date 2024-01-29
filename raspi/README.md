@@ -15,7 +15,7 @@
 `sudo apt install npm`
 
 ### Install curl
-sudo apt install curl
+`sudo apt install curl`
 
 ### Install NVM (Node Version Manager)
 `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`

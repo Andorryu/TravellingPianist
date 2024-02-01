@@ -19,7 +19,7 @@ class ChromeDriver:
         from selenium.webdriver.support import expected_conditions as EC
 
         config = configparser.ConfigParser()
-        config.read('/home/will/Desktop/config.ini')
+        config.read('/config.ini')
         self.username = config['credentials']['username']
         self.password = config['credentials']['password']
 
@@ -27,6 +27,7 @@ class ChromeDriver:
     def run(self):
 
         chrome_options = Options()
+        # chrome_options.BinaryLocation = "usr/bin/chromeium-browser"
         chrome_options.add_experimental_option("detach", True)
 
         service = Service(executable_path='/usr/bin/chromedriver')

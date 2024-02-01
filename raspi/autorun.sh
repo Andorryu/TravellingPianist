@@ -6,15 +6,15 @@
 
 # RUN VIA THE FOLLOWING COMMAND: ./autorun.sh
 
-gnome-terminal -- bash -c "cd /home/will/piano/TravellingPianist/raspi/flask/; python3 src/main.py; exec bash"
+gnome-terminal -- bash -c "cd /home/will/TravellingPianist/; source ./venv/bin/activate; cd raspi/flask; python3 src/main.py; exec bash"
 
-gnome-terminal -- bash -c "cd /home/will/piano/TravellingPianist/raspi/react/; npm start; exec bash"
+gnome-terminal -- bash -c "cd /home/will/TravellingPianist; source ./venv/bin/activate; cd raspi/react; npm start; exec bash"
 
 
 wait 3
 
 # Get the window ID of the Chrome window
-chrome_window_id=$(xdotool search --name "Google Chrome" | head -n 1)
+chrome_window_id=$(xdotool search --name "Chromium Web Browser" | head -n 1)
 
 # Check if the Chrome window ID is found
 if [ -n "$chrome_window_id" ]; then

@@ -22,8 +22,8 @@ def Map(file) -> timeline:
             delta_time += msg_dict["time"]
             continue
 
-        msg_note = msg_dict["note"]
-        msg_vel = msg_dict["velocity"]
+        msg_note = msg_dict["note"] - 21
+        msg_vel = 1 if msg_dict["velocity"] > 0 else 0
         msg_time = msg_dict["time"] + delta_time
 
         new_note_event: dict = {
@@ -54,7 +54,7 @@ def play_song(mapping: timeline):
         if event["time"] > 0:
             time.sleep(event["time"])
         if event["velocity"] > 0:
-            clock = fork(piano.play_note, [event["note"], event["velocity"]/127, 100])
+            clock = fork(piano.play_note, [event["note"]+21, event["velocity"]/127, 100])
             # cache clock
             proc_dict[event["note"]] = clock
         else:

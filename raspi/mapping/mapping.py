@@ -4,8 +4,7 @@ import mido
 timeline = list[dict]
 
 """
-    file: string that represents the relative file location of the midi file
-    returns a score that represents the data to be transmitted to the arduino
+    file: midifile filename
 """
 def Map(file) -> timeline:
     raw_data = mido.MidiFile(file)
@@ -23,7 +22,7 @@ def Map(file) -> timeline:
             continue
 
         msg_note = msg_dict["note"] - 21
-        msg_vel = 1 if msg_dict["velocity"] > 0 else 0
+        msg_vel = msg_dict["velocity"]
         msg_time = msg_dict["time"] + delta_time
 
         new_note_event: dict = {
@@ -80,4 +79,3 @@ if __name__ == "__main__":
     # play song thru unit test function
     print("Playing song...")
     play_song(mapping)
-

@@ -47,6 +47,7 @@ def init_chip_pins(num_pins, offset) -> list[pcf.PCF]:
     #chips = [pcf.PCF(i) for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips))]
     chips = []
     for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips)):
+        print(f"init PCF at {i}")
         chips.append(pcf.PCF(i))
 
     for chip in chips:
@@ -61,9 +62,7 @@ def init_chip_pins(num_pins, offset) -> list[pcf.PCF]:
 
     # init pins
     for i in range(num_pins): # create pins "0", "1", ..., f"{num_pins-1}"
-        print(f"assigning pinmode {i}")
         chips[(i//8)].pin_mode(f"{i%8}", "OUTPUT")
-        print(f"assigned pinmode {i}")
 
     for i in range(num_pins):
         chips[(i//8)].write(f"p{i%8}", "LOW")
@@ -123,8 +122,6 @@ def play_song(song_data, mode, num_pins=88, offset=0):
         else: # note off
             do_note_event(offset, num_pins, mode, pins, note, False)
 
-    GPIO.cleanup()
-
 # testing
 if __name__ == "__main__":
     import json
@@ -137,4 +134,4 @@ if __name__ == "__main__":
         file.close()
         song_data = json.loads(json_data)
         play_song(song_data, sys.argv[2], int(sys.argv[3]), int(sys.argv[4]))
-    
+   

@@ -7,10 +7,9 @@ import pcf8574_io as pcf
 import json
 
 class Control:
-    def __init__(self, json_path, num_keys=88, offset=0):
+    def __init__(self, num_keys=88, offset=0):
         self.offset = offset
-        self.song_data = self.parse_json(json_path)
-        
+        self.num_keys = num_keys
         num_chips =  math.ceil(num_keys/8) # number of pcf boards to use
 
         chips = [pcf.PCF(i) for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips))]
@@ -33,7 +32,8 @@ class Control:
             chips[(i//8)].write(f"p{i%8}", "LOW")
 
         self.chips = chips
-        
+        self.reset_pins()
+
 
     def parse_json(self, json_path):
         file = open(json_path, "r")
@@ -42,28 +42,29 @@ class Control:
         json_data = json.loads(json_data)
         return json_data
 
-    def check_song(self):
-        if len(self.song_data) > 0:
-            print("INIT PASSED\n")
-            return True
-        else:
-            print("INIT FAILED\n")
-            return False
-    
     # high_low: "HIGH" or "LOW"
     def output(self, note, high_low: str):
+        
         note -= self.offset
-        self.chips[note//8].write(f"{note%8}", high_low)
+        if note < self.num_keys and note >= 0: #skip notes that aren't in window
+            self.chips[note//8].write(f"{note%8}", high_low)
 
-    def play_song(self):
-        for note_event in self.song_data:
+    def play_song(self, song_path):
+        song_data = self.parse_json(song_path)
+        for note_event in song_data:
             note = note_event["note"]
             vel = note_event["velocity"]
             time = note_event["time"]
 
+            print(note_event['note'])
+
             sleep(time)
 
             self.output(note, "HIGH" if vel > 0 else "LOW")
+
+    def reset_pins(self):
+        for i in range(self.num_keys):
+            self.chips[i//8].write(f"{i%8}", "LOW")
 
 
 # testing
@@ -73,8 +74,5 @@ if __name__ == "__main__":
         print("Command Format: python3 control.py <json_path> <num_pins> <offset>")
 
     else:
-        # con = Control(str(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])) # initialize
-        # con.play_song() # play song
-        path = "/home/will/MIDI/beat.json"
-        con = Control(json_path=path, num_keys=4, offset=0)
-        con.play_song()
+        con = Control(num_keys=int(sys.argv[2]), offset=sys.argv[3])
+        con.play_song(sys.argv[1])

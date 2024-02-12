@@ -3,12 +3,12 @@
 # activate python virtual enviroment
 source ./venv/bin/activate
 
-gnome-terminal -- bash -c "cd /home/will/TravellingPianist/raspi/flask; python3 src/main.py; exec bash"
+gnome-terminal -- bash -c "cd /home/will/TravellingPianist/raspi/flask; sudo python3 src/main.py; exec bash"
 
-gnome-terminal -- bash -c "cd /home/will/TravellingPianist/raspi/react; serve -g build; exec bash"
+gnome-terminal -- bash -c "cd /home/will/TravellingPianist/raspi/react; serve build; exec bash"
 
 
-wait 3
+# wait 3
 
 # # Get the window ID of the Chrome window
 # chrome_window_id=$(xdotool search --name "Chromium Web Browser" | head -n 1)
@@ -23,6 +23,9 @@ wait 3
 # fi
 
 # starting musescore side bar
-curl -s "http://127.0.0.1:5000/startup"
+
+# sleep 3
+
+# curl -s "http://127.0.0.1:5000/startup"
 
 

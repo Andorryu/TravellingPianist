@@ -9,7 +9,7 @@ import json
 class Control:
     def __init__(self, json_path, num_keys=88, offset=0):
         self.offset = offset
-        self.song_data = parse_json(json_path)
+        self.song_data = self.parse_json(json_path)
         
         num_chips =  math.ceil(num_keys/8) # number of pcf boards to use
 
@@ -34,21 +34,20 @@ class Control:
 
         self.chips = chips
         
-        if (self.check_song()):
-            print("INIT PASSED SUCCESFULLY\n")
-        else:
-            print("INIT FAILED\n")
 
-    def parse_json(json_path):
+    def parse_json(self, json_path):
         file = open(json_path, "r")
         json_data = file.read()
         file.close()
+        json_data = json.loads(json_data)
         return json_data
 
-    def check_song():
+    def check_song(self):
         if len(self.song_data) > 0:
+            print("INIT PASSED\n")
             return True
         else:
+            print("INIT FAILED\n")
             return False
     
     # high_low: "HIGH" or "LOW"
@@ -74,5 +73,8 @@ if __name__ == "__main__":
         print("Command Format: python3 control.py <json_path> <num_pins> <offset>")
 
     else:
-        con = Control(str(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])) # initialize
-        con.play_song() # play song
+        # con = Control(str(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])) # initialize
+        # con.play_song() # play song
+        path = "/home/will/MIDI/beat.json"
+        con = Control(json_path=path, num_keys=4, offset=0)
+        con.play_song()

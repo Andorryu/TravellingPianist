@@ -4,9 +4,9 @@ sys.path.insert(0, '../../')
 from control.control_class import Control
 
 
-json_dir = "/home/will/MIDI"
-json_name = "midi2jsn.json"
-json_path = midi_dir + midi_name
+json_dir = "/home/will/MIDI/"
+json_name = "mid2jsn.json"
+json_path = json_dir + json_name
 
 
 # endpoint 4 -> play song on device

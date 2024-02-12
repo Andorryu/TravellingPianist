@@ -86,9 +86,9 @@ class Control:
     def init_pins(self):
         match self.mode.upper():
             case "PI":
-                return self.init_pi_pins(self.num_pins, self.offset)
+                return self.init_pi_pins()
             case "I2C":
-                return self.init_chip_pins(self.num_pins, self.offset)
+                return self.init_chip_pins()
     # _______________________________________________________________________________________
 
     def __init__(self, json_path, mode="I2C", num_pins=88, offset=0):
@@ -99,10 +99,10 @@ class Control:
         file = open(json_path, "r")
         json_data = file.read()
         file.close()
-        self.song_data = json.loads(json_path)
+        self.song_data = json.loads(json_data)
 
         # raspi initialization "stuff"
-        self.pins = self.init_pins(self.num_pins, self.offset, self.mode)
+        self.pins = self.init_pins()
         
         # should probably check that initialization passes here
 
@@ -117,13 +117,13 @@ class Control:
         GPIO.output(PI_PIN_MAP[note_code], on_off)
 
 
-    def do_note_event(self, offset, num_pins, mode, pins, note_code, on):
+    def do_note_event(self, pins, note_code, on):
         if note_code >= self.offset and note_code < self.offset + self.num_pins:# in range
             match self.mode:
                 case "PI":
-                    note_event_pi(note_code, on)
+                    self.note_event_pi(note_code, on)
                 case "I2C":
-                    note_event_i2c(pins, note_code, "HIGH" if on else "LOW")
+                    self.note_event_i2c(pins, note_code, "HIGH" if on else "LOW")
             print(f"pressed note {note_code} {'on' if on else 'off'}")
 
 
@@ -136,7 +136,7 @@ class Control:
 
     def play_song(self):
         # loop through each note event
-        for note_event in song_data:
+        for note_event in self.song_data:
             # collect note event data
             note = note_event["note"]
             vel = note_event["velocity"]
@@ -146,8 +146,8 @@ class Control:
 
             # add PWM control here in later version
             if vel > 0: # note on
-                do_note_event(self.offset, self.num_pins, self.mode, self.pins, note, True)
+                self.do_note_event(note, True)
             else: # note off
-                do_note_event(self.offset, self.num_pins, self.mode, self.pins, note, False)
+                self.do_note_event(note, False)
 
         GPIO.cleanup()

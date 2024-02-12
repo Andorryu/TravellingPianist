@@ -33,6 +33,7 @@ class Control:
     
     # high_low: "HIGH" or "LOW"
     def output(self, note, high_low: str):
+        note -= self.offset
         self.chips[note//8].write(f"{note%8}", high_low)
 
     def play_song(self, song_data):
@@ -58,5 +59,5 @@ if __name__ == "__main__":
         file.close()
         song_data = json.loads(json_data)
 
-        con = Control(int(sys.argv[2]), sys.argv[3]) # initialize
+        con = Control(int(sys.argv[2]), int(sys.argv[3])) # initialize
         con.play_song(song_data) # play song

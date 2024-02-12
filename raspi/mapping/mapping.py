@@ -43,7 +43,6 @@ import math
 import time
 import os
 import signal
-from scamp import *
 
 def play_song(mapping: timeline):
     s = Session(max_threads=10000) # high number of threads so that rush e can play lmao
@@ -62,6 +61,7 @@ def play_song(mapping: timeline):
                     proc_dict[note].kill()
 
 if __name__ == "__main__":
+    from scamp import *
 
     # interpret command-line
     if len(sys.argv) != 2:

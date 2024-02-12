@@ -5,7 +5,6 @@ from endpoints.startup import StartUp
 from endpoints.search import Search
 from endpoints.upload import Upload
 from endpoints.play import Play
-from endpoints.reset import Reset
 
 
 
@@ -18,7 +17,6 @@ api.add_resource(StartUp, "/startup")
 api.add_resource(Search, "/search")
 api.add_resource(Upload, "/upload")
 api.add_resource(Play, "/play")
-api.add_resource(Reset, "/reset")
 
 
 if __name__ == "__main__":

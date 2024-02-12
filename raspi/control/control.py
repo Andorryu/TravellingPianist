@@ -50,6 +50,7 @@ class Control:
 
     def play_song(self, song_path):
         song_data = self.parse_json(song_path)
+        print("Playing song...")
         for note_event in song_data:
             note = note_event["note"]
             vel = note_event["velocity"]
@@ -62,7 +63,7 @@ class Control:
             while end - start < time:
                 end = monotonic()
             
-            print(f"Time waited: {end-start} vs time desired: {time}")
+            #print(f"Time waited: {end-start} vs time desired: {time}")
 
             note -= self.offset
             if note < self.num_keys and note >= 0: #skip notes that aren't in window

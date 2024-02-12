@@ -28,7 +28,7 @@ def Map(file) -> timeline:
         new_note_event: dict = {
             "note": msg_note,
             "velocity": msg_vel,
-            "time": msg_time
+            "time": msg_time + (0 if msg_time == 0 else 0.05)
         }
 
         delta_time = 0

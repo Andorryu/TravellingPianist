@@ -9,7 +9,7 @@ from control.control import Control
 
 json_dir = "/home/will/MIDI/"
 json_name = "mid2jsn.json"
-# json_name = "beat.json"
+#json_name = "beat.json"
 json_path = json_dir + json_name
 
 PID = None
@@ -19,7 +19,7 @@ PID = None
 class Play(Resource):
     def __init__(self):
         super().__init__()
-        self.con = Control(num_keys=4, offset=0)
+        self.con = Control(num_keys=12, offset=39)
 
     def play_song_process(self, json_path):
         self.con.play_song(json_path)
@@ -50,6 +50,7 @@ class Play(Resource):
         print(f"Play Song PID: {PID}\n\n")
 
         # kill play_song_process process via PID
-        os.kill(PID, signal.SIGTERM)
+        if PID != None:
+            os.kill(PID, signal.SIGTERM)
 
         return response, 200

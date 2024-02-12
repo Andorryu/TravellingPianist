@@ -1,5 +1,5 @@
 
-from time import sleep
+from time import monotonic
 import math
 import sys
 import pcf8574_io as pcf
@@ -45,8 +45,8 @@ class Control:
     # high_low: "HIGH" or "LOW"
     def output(self, note, high_low: str):
         note -= self.offset
-        if note < self.num_keys and note >= 0: #skip notes that aren't in window
-            self.chips[note//8].write(f"{note%8}", high_low)
+        #if note < self.num_keys and note >= 0: #skip notes that aren't in window
+        self.chips[note//8].write(f"{note%8}", high_low)
 
     def play_song(self, song_path):
         song_data = self.parse_json(song_path)
@@ -55,11 +55,19 @@ class Control:
             vel = note_event["velocity"]
             time = note_event["time"]
 
-            # print(note)
+            #print(note)
 
-            sleep(time)
+            start = monotonic()
+            end = monotonic()
+            while end - start < time:
+                end = monotonic()
+            
+            print(f"Time waited: {end-start} vs time desired: {time}")
 
-            self.output(note, "HIGH" if vel > 0 else "LOW")
+            note -= self.offset
+            if note < self.num_keys and note >= 0: #skip notes that aren't in window
+                self.chips[note//8].write(f"{note%8}", "HIGH" if vel > 0 else "LOW")
+        print("Song finished")
 
     def reset_pins(self):
         for i in range(self.num_keys):

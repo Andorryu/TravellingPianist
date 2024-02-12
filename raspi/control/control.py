@@ -44,7 +44,11 @@ def chip_test():
 def init_chip_pins(num_pins, offset) -> list[pcf.PCF]:
     num_chips =  math.ceil(num_pins/8) # number of pcf boards to use
 
-    chips = [pcf.PCF(i) for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips))]
+    #chips = [pcf.PCF(i) for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips))]
+    chips = []
+    for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips)):
+        chips.append(pcf.PCF(i))
+
     for chip in chips:
         chip.set_i2cBus(1)
 
@@ -57,7 +61,12 @@ def init_chip_pins(num_pins, offset) -> list[pcf.PCF]:
 
     # init pins
     for i in range(num_pins): # create pins "0", "1", ..., f"{num_pins-1}"
-        chips[i//8].pin_mode(f"{i}", "OUTPUT")
+        print(f"assigning pinmode {i}")
+        chips[(i//8)].pin_mode(f"{i%8}", "OUTPUT")
+        print(f"assigned pinmode {i}")
+
+    for i in range(num_pins):
+        chips[(i//8)].write(f"p{i%8}", "LOW")
     return chips
 
     # example chips and their associated pins for num_pins = 24:
@@ -81,13 +90,13 @@ def init_pins(num_pins, offset, mode: str):
 
 # high_low: "HIGH" or "LOW"
 def note_event_i2c(chips: list[pcf.PCF], note_code, high_low: str):
-    chips[note_code//8].write(f"{note_code}", high_low)
+    chips[note_code//8].write(f"{note_code%8}", high_low)
 
 # high_low: "HIGH" or "LOW"
 def note_event_pi(note_code, on_off: bool):
     GPIO.output(PI_PIN_MAP[note_code], on_off)
 
-def note_event(offset, num_pins, mode, pins, note_code, on):
+def do_note_event(offset, num_pins, mode, pins, note_code, on):
     if note_code >= offset and note_code < offset+num_pins:# in range
         match mode:
             case "PI":
@@ -110,9 +119,9 @@ def play_song(song_data, mode, num_pins=88, offset=0):
         sleep(time)
 
         if vel > 0: # note on
-            note_event(offset, num_pins, mode, pins, note, True)
+            do_note_event(offset, num_pins, mode, pins, note, True)
         else: # note off
-            note_event(offset, num_pins, mode, pins, note, False)
+            do_note_event(offset, num_pins, mode, pins, note, False)
 
     GPIO.cleanup()
 

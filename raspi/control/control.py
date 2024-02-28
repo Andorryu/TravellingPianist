@@ -33,6 +33,11 @@ class Control:
             chips[(i//8)].write(f"p{i%8}", "LOW")
 
         self.chips = chips
+        
+        if (self.check_song()):
+            print("INIT PASSED SUCCESFULLY\n")
+        else:
+            print("INIT FAILED\n")
 
     def parse_json(json_path):
         file = open(json_path, "r")
@@ -65,7 +70,7 @@ class Control:
 # testing
 if __name__ == "__main__":
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 4:
         print("Command Format: python3 control.py <json_path> <num_pins> <offset>")
 
     else:

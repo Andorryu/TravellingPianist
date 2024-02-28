@@ -54,7 +54,7 @@ def reset():
 def main():
 	print("Enter a endpoint number\n")
 	print("startup -> 1\nsearch  -> 2\nupload  -> 3\nplay    -> 4\nreset   -> 5\n")
-	user_input = 9;
+	user_input = 9
 	while user_input !=  0:
 		user_input = int(input())
 		if user_input == 1:

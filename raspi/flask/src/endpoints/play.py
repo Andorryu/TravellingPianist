@@ -18,11 +18,14 @@ class Play(Resource):
         # sent to frontend for acknowledgment
         response = {}
 
-        # checking song was parsed correctly
-        if (pi_control.check_song):
-            response['state'] = "True"
-            pi_board.play_song()
-            return response, 200 # HOW DO WE KNOW WHEN SONG IS DONE (frontend needs update)
-        else:
-            response['state'] = "False"
-            return response, 400
+        # # checking song was parsed correctly
+        # if (pi_control.check_song()):
+        #     response['state'] = "True"
+        #     pi_board.play_song() # START THIS FUNCTION IN BACKGROUND
+        #     # HOW DO WE KNOW WHEN SONG IS DONE (frontend needs update)
+        # else:
+        #     response['state'] = "False"
+
+        response['state'] = "True"
+
+        return response, 200

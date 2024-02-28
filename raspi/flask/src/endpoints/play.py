@@ -13,14 +13,16 @@ json_path = json_dir + json_name
 class Play(Resource):
     def get(self):
         # initializing pi board 
-        pi_board = Control(json_path)
+        pi_control = Control(json_path)
 
-        # validating initialization
+        # sent to frontend for acknowledgment
         response = {}
-        if (pi_board.check_song_data):
+
+        # checking song was parsed correctly
+        if (pi_control.check_song):
             response['state'] = "True"
             pi_board.play_song()
-            return response, 200
+            return response, 200 # HOW DO WE KNOW WHEN SONG IS DONE (frontend needs update)
         else:
             response['state'] = "False"
             return response, 400

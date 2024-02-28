@@ -4,10 +4,13 @@ from time import sleep
 import math
 import sys
 import pcf8574_io as pcf
+import json
 
 class Control:
-    def __init__(self, num_keys, offset):
+    def __init__(self, json_path, num_keys=88, offset=0):
         self.offset = offset
+        self.song_data = parse_json(json_path)
+        
         num_chips =  math.ceil(num_keys/8) # number of pcf boards to use
 
         chips = [pcf.PCF(i) for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips))]
@@ -30,14 +33,26 @@ class Control:
             chips[(i//8)].write(f"p{i%8}", "LOW")
 
         self.chips = chips
+
+    def parse_json(json_path):
+        file = open(json_path, "r")
+        json_data = file.read()
+        file.close()
+        return json_data
+
+    def check_song():
+        if len(self.song_data) > 0:
+            return True
+        else:
+            return False
     
     # high_low: "HIGH" or "LOW"
     def output(self, note, high_low: str):
         note -= self.offset
         self.chips[note//8].write(f"{note%8}", high_low)
 
-    def play_song(self, song_data):
-        for note_event in song_data:
+    def play_song(self):
+        for note_event in self.song_data:
             note = note_event["note"]
             vel = note_event["velocity"]
             time = note_event["time"]
@@ -49,15 +64,10 @@ class Control:
 
 # testing
 if __name__ == "__main__":
-    import json
 
-    if len(sys.argv) != 4:
-        print("Command Format: python3 control.py json_song_file num_pins offset")
+    if len(sys.argv) != 2:
+        print("Command Format: python3 control.py <json_path> <num_pins> <offset>")
+
     else:
-        file = open(sys.argv[1], "r")
-        json_data = file.read()
-        file.close()
-        song_data = json.loads(json_data)
-
-        con = Control(int(sys.argv[2]), int(sys.argv[3])) # initialize
-        con.play_song(song_data) # play song
+        con = Control(str(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])) # initialize
+        con.play_song() # play song

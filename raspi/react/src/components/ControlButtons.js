@@ -82,7 +82,7 @@ export default function ControlButtons({selected, setSelected}) {
 
 
     const fetchReset = () => {
-        fetch("http://127.0.0.1:5000/reset")
+        fetch("http://127.0.0.1:5000/play")
         .then((response) => response.json())
         .then((json) => {
             // console.log(json.state);

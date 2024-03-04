@@ -56,11 +56,11 @@ class Control:
             vel = note_event["velocity"]
             time = note_event["time"]
 
-            print(note_event['note'])
-
+            print(note)
+            
             sleep(time)
 
-            # self.output(note, "HIGH" if vel > 0 else "LOW")
+            self.output(note, "HIGH" if vel > 0 else "LOW")
 
     def reset_pins(self):
         for i in range(self.num_keys):

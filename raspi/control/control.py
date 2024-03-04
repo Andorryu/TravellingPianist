@@ -35,7 +35,7 @@ class Control:
         self.reset_pins()
 
 
-    def parse_json(json_path):
+    def parse_json(self, json_path):
         file = open(json_path, "r")
         json_data = file.read()
         file.close()
@@ -49,13 +49,13 @@ class Control:
             self.chips[note//8].write(f"{note%8}", high_low)
 
     def play_song(self, song_path):
-        song_data = parse_json(song_path)
+        song_data = self.parse_json(song_path)
         for note_event in song_data:
             note = note_event["note"]
             vel = note_event["velocity"]
             time = note_event["time"]
 
-            print(note)
+            # print(note)
             
             sleep(time)
 

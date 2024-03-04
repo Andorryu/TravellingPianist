@@ -5,6 +5,8 @@ import sys
 import pcf8574_io as pcf
 import json
 
+# NOTE: FOR OCTAVE TEST, MAKE OFFSET = 39 AND NUM_KEYS = 12
+
 class Control:
     def __init__(self, num_keys=88, offset=0):
         self.offset = offset
@@ -33,7 +35,6 @@ class Control:
         self.chips = chips
         self.reset_pins()
 
-
     def parse_json(self, json_path):
         file = open(json_path, "r")
         json_data = file.read()
@@ -55,7 +56,7 @@ class Control:
             time = note_event["time"]
 
             # print(note)
-            
+
             sleep(time)
 
             self.output(note, "HIGH" if vel > 0 else "LOW")

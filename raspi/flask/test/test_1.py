@@ -46,7 +46,7 @@ def play():
 ##################################################################
 # # testing endpoint 5 -> "/reset"
 def reset():
-	response = requests.get(BASE + "reset")
+	response = requests.put(BASE + "play", json={})
 	print(response.json())
 	
 	
@@ -74,7 +74,7 @@ def main():
 			reset()
 		else:
 			print("Not a valid input\n")
-			user_input = 9;
+			user_input = 9
 			
 main()
 

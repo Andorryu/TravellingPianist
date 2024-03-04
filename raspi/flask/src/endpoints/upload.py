@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse
 import os
 import json
 import sys
-sys.path.insert(0, '//')
+sys.path.insert(0, '../')
 from mapping.mapping import Map
 
 

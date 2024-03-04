@@ -8,7 +8,7 @@ gnome-terminal -- bash -c "cd /home/will/TravellingPianist/raspi/react; serve -g
 
 wait 5
 
-# starting flask server in background
-python3 /home/will/TravellingPianist/raspi/flask/src/main.py
+# starting flask server in foreground
+sudo python3 /home/will/TravellingPianist/raspi/flask/src/main.py
 
 

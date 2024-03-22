@@ -1,90 +1,173 @@
-# Installing React (UI) onto Pi OS
+import { useState, useEffect } from "react";
+import "./ControlButtons.css";
 
-## 1. React Dependencies
+export default function ControlButtons({selected, setSelected}) {
 
-### Update Kernel
-`sudo apt update`
+    const initialStyle = {
+        backgroundColor: "grey",
+    }
 
-### Install Git for version control and cloning
-`sudo apt install git`
+    const blankStyle = {
+        backgroundColor: "grey",
+    };
 
-### Install Node.js
-`sudo apt install nodejs`
+    const trueStyle = {
+        backgroundColor: "green",
+    };
 
-### Install npm (Node Package Manager)
-`sudo apt install npm`
+    const falseStyle = {
+        backgroundColor: "red",
+    };
 
-### Install curl
-`sudo apt install curl`
-
-### Install NVM (Node Version Manager)
-`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
-
-### Commit NVM Install
-`source ~/.bashrc`
-
-
-## 2. React Setup
-
-### Pull from remote repository
-`git clone https://github.com/Andorryu/TravellingPianist.git`
-
-### Navigate to react project repository
-`cd TravellingPianist/raspi/react`
-
-### Install project dependecies located in package.json
-`npm install`
-
-### Launch the Web Server
-`npm start`
+    const [uploadstatus, setUploadstatus] = useState("False");
+    const [uploadstyle, setUploadstyle] = useState(initialStyle);
+    const [playstatus, setPlaystatus] = useState("False");
+    const [playstyle, setPlaystyle] = useState(initialStyle);
+    const [resetstatus, setResetstatus] = useState("False");
+    const [resetstyle, setResetstyle] = useState(initialStyle);
 
 
-# Installing Flask (API) onto Pi OS
+    const fetchUpload = (value) => {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({"name": value})
+        }; 
+    
+    
+        fetch("http://127.0.0.1:5000/upload", requestOptions)
+        .then((response) => response.json())
+        .then((json) => {
+            // json.state = {"True", "False"}
+            setUploadstatus(json.state);
+        });
+    }
+    useEffect( () => {
+        if (uploadstatus === "True") {
+            // set upload button to green
+            setUploadstyle(() => (trueStyle));
 
-## 1. Flask Dependencies
+            // reset pins and stop current song
+            fetch("http://127.0.0.1:5000/play", {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            });
 
-### Navigate to flask project repository
-`cd TravellingPianist/raspi/flask`
+            // set reset to true and turn button green
+            setResetstatus("True");
+            setResetstyle(() => (trueStyle));
 
-### Install project dependencies located in requirements.txt
-`pip install -r requirements.txt`
+            // set play to false and turn button grey
+            setPlaystatus("False");
+            setPlaystyle(() => (blankStyle));
+            
+        } else if (uploadstatus === "False") {
+            console.log("FALSE upload response!");
+            setUploadstyle(() => (falseStyle));
+        } else {
+            setUploadstyle(() => (blankStyle));
+        }
+    }, [uploadstatus]);
+
+    
+    const fetchPlay = () => {
+        fetch("http://127.0.0.1:5000/play")
+        .then((response) => response.json())
+        .then((json) => {
+            // console.log(json.state);
+            setPlaystatus(json.state);
+        });
+    }
+    useEffect( () => {
+        if (playstatus === "True") {
+            // set play button to green
+            setPlaystyle(() => (trueStyle));
+
+            // maybe implement timer or something similar?
+            // TIMER HERE
+
+            // set reset status to false and turn button grey
+            setResetstatus("False");
+            setResetstyle(() => (blankStyle));
+
+        } else if (playstatus === "False") {
+            setPlaystyle(() => (falseStyle));
+        } else {
+            setPlaystyle(() => (initialStyle));
+        }
+    }, [playstatus]);
+
+    const handlePlay = () => {
+        // upload must be true to play
+        if (uploadstatus === "True") {
+            fetchPlay();
+        }
+    }
 
 
-## 2. Install ChromeDriver
+    const fetchReset = () => {
+        const requestOptions = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({})
+        }; 
 
-### Download chromedriver from 
-`https://googlechromelabs.github.io/chrome-for-testing/`
+        fetch("http://127.0.0.1:5000/play", requestOptions)
+        .then((response) => response.json())
+        .then((json) => {
+            // json.state = {"True", "False"}
+            setResetstatus(json.state);
+            setSelected("");
+        });
+    }
+    useEffect( () => {
+        if (resetstatus === "True") {
+            // set reset button to green
+            setResetstyle(() => (trueStyle));
 
-### Extract executable and place in /usr/bin/chromedriver
-`sudo mv chromedriver /usr/bin/chromedriver`
+            // play to false and blank state
+            setPlaystatus("False");
+            setPlaystyle(() => (blankStyle));
 
+            // set upload to false and blank style
+            setUploadstatus("False");
+            setUploadstyle(() => (blankStyle));
+            
+        } else if (resetstatus === "False") {
+            setResetstyle(() => (falseStyle));
+        } else {
+            setResetstyle(() => (initialStyle));
+        }
+    }, [resetstatus]);
+    
 
-# Booting the Project Servers
-
-## 1. Launching react frontend user interface
-
-### Launch the local react web app from its project folder
-`cd TravellingPianist/raspi/react`
-`npm start`
-
-
-### 2. Launching flask backend API
-
-### (In a seperate terminal) Launch the local flash api from its project folder
-`cd TravellingPianist/raspi/flask`
-`python3 src/main.py`
-
-
-# Timing Problems
-`sudo apt install ntpd`
-`/etc/init.d/ntp stop`
-`sudo apt install raspi-config`
-`sudo raspi-config`
-`date -s "29 Jan 2023 14:15:00"`
-`/etc/init.d/ntp start`
-`sudo reboot`
-
-
+    return (
+        <div className="grid-item-4">
+            <div className="control-container">
+                <button className="control-button" onClick={() => fetchUpload(selected)}>Upload</button>
+                <div className="status-container">
+                    <div className="status-label">Status</div>
+                    <div className="status-upload" style={uploadstyle}>{uploadstatus}</div>
+                </div>
+            </div>
+            <div className="control-container">
+                <button className="control-button" onClick={() => handlePlay()}>Play</button>
+                <div className="status-container">
+                    <div className="status-label">Status</div>
+                    <div className="status-play" style={playstyle}>{playstatus}</div>
+                </div>
+            </div>
+            <div className="control-container">
+                <button className="control-button" onClick={() => fetchReset()}>Reset</button>
+                <div className="status-container">
+                    <div className="status-label">Status</div>
+                    <div className="status-reset" style={resetstyle}>{resetstatus}</div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 
 

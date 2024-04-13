@@ -3,10 +3,6 @@ import "./ControlButtons.css";
 
 export default function ControlButtons({selected, setSelected}) {
 
-    const initialStyle = {
-        backgroundColor: "grey",
-    }
-
     const blankStyle = {
         backgroundColor: "grey",
     };
@@ -20,11 +16,11 @@ export default function ControlButtons({selected, setSelected}) {
     };
 
     const [uploadstatus, setUploadstatus] = useState("False");
-    const [uploadstyle, setUploadstyle] = useState(initialStyle);
+    const [uploadstyle, setUploadstyle] = useState(falseStyle);
     const [playstatus, setPlaystatus] = useState("False");
-    const [playstyle, setPlaystyle] = useState(initialStyle);
+    const [playstyle, setPlaystyle] = useState(falseStyle);
     const [resetstatus, setResetstatus] = useState("False");
-    const [resetstyle, setResetstyle] = useState(initialStyle);
+    const [resetstyle, setResetstyle] = useState(falseStyle);
 
 
     const fetchUpload = (value) => {
@@ -38,7 +34,7 @@ export default function ControlButtons({selected, setSelected}) {
         fetch("http://127.0.0.1:5000/upload", requestOptions)
         .then((response) => response.json())
         .then((json) => {
-            // json.state = {"True", "False"}
+            // console.log(json.state);
             setUploadstatus(json.state);
         });
     }
@@ -46,27 +42,24 @@ export default function ControlButtons({selected, setSelected}) {
         if (uploadstatus === "True") {
             // set upload button to green
             setUploadstyle(() => (trueStyle));
-
+    
             // reset pins and stop current song
             fetch("http://127.0.0.1:5000/play", {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({})
             });
-
-            // set reset to true and turn button green
-            setResetstatus("True");
-            setResetstyle(() => (trueStyle));
-
-            // set play to false and turn button grey
+    
+            setResetstatus("False");
+            setResetstyle(() => (falseStyle));
+    
             setPlaystatus("False");
-            setPlaystyle(() => (blankStyle));
-            
-        } else if (uploadstatus === "False") {
-            console.log("FALSE upload response!");
-            setUploadstyle(() => (falseStyle));
+            setPlaystyle(() => (falseStyle));
+
         } else {
+            console.log("FALSE upload response!");
             setUploadstyle(() => (blankStyle));
+
         }
     }, [uploadstatus]);
 
@@ -81,23 +74,25 @@ export default function ControlButtons({selected, setSelected}) {
     }
     useEffect( () => {
         if (playstatus === "True") {
-            // set play button to green
-            setPlaystyle(() => (trueStyle));
 
+            setPlaystyle(() => (trueStyle));
+    
             // maybe implement timer or something similar?
             // TIMER HERE
 
-            // set reset status to false and turn button grey
+            setUploadstatus("True");
+            setUploadstyle(() => (trueStyle));
+   
             setResetstatus("False");
-            setResetstyle(() => (blankStyle));
+            setResetstyle(() => (falseStyle));
+    
 
-        } else if (playstatus === "False") {
-            setPlaystyle(() => (falseStyle));
         } else {
-            setPlaystyle(() => (initialStyle));
+            console.log("FALSE play response!");
+            setPlaystyle(() => (blankStyle));
         }
     }, [playstatus]);
-
+    
     const handlePlay = () => {
         // upload must be true to play
         if (uploadstatus === "True") {
@@ -116,28 +111,25 @@ export default function ControlButtons({selected, setSelected}) {
         fetch("http://127.0.0.1:5000/play", requestOptions)
         .then((response) => response.json())
         .then((json) => {
-            // json.state = {"True", "False"}
+            // console.log(json.state);
             setResetstatus(json.state);
             setSelected("");
         });
     }
     useEffect( () => {
         if (resetstatus === "True") {
-            // set reset button to green
+
             setResetstyle(() => (trueStyle));
-
-            // play to false and blank state
+    
             setPlaystatus("False");
-            setPlaystyle(() => (blankStyle));
-
-            // set upload to false and blank style
+            setPlaystyle(() => (falseStyle));
+    
             setUploadstatus("False");
-            setUploadstyle(() => (blankStyle));
+            setUploadstyle(() => (falseStyle));
             
-        } else if (resetstatus === "False") {
-            setResetstyle(() => (falseStyle));
         } else {
-            setResetstyle(() => (initialStyle));
+            console.log("FALSE reset response!");
+            setResetstyle(() => (blankStyle));  
         }
     }, [resetstatus]);
     
@@ -168,10 +160,3 @@ export default function ControlButtons({selected, setSelected}) {
         </div>
     )
 }
-
-
-
-
-
-
-

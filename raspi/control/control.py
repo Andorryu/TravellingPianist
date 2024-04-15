@@ -30,7 +30,7 @@ class Control:
             chips[(i//8)].pin_mode(f"{i%8}", "OUTPUT")
 
         for i in range(num_keys):
-            chips[(i//8)].write(f"p{i%8}", "LOW")
+            chips[(i//8)].write(f"{i%8}", "LOW")
 
         self.chips = chips
         self.reset_pins()
@@ -67,12 +67,12 @@ class Control:
 
             note -= self.offset
             if note < self.num_keys and note >= 0: #skip notes that aren't in window
-                self.chips[note//8].write(f"{note%8}", "HIGH" if vel > 0 else "LOW")
+                self.output(note, "HIGH" if vel > 0 else "LOW")
         print("Song finished")
 
     def reset_pins(self):
         for i in range(self.num_keys):
-            self.chips[i//8].write(f"{i%8}", "LOW")
+            self.output(i, "LOW")
 
 
 # testing

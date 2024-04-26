@@ -1,5 +1,5 @@
 
-from time import monotonic
+from time import monotonic, sleep
 import math
 import sys
 import pcf8574_io as pcf
@@ -22,7 +22,7 @@ class Control:
         if num_chips > 8:
             temp = [pcf.PCF(i) for i in range(0x20, 0x20+(num_chips-8))]
             for chip in temp:
-                chip.set_i2cBus(2)
+                chip.set_i2cBus(0)
             chips += temp
 
         # init pins
@@ -77,9 +77,14 @@ class Control:
 
 # testing
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Command Format: python3 control.py <json_path> <num_pins> <offset>")
 
-    else:
-        con = Control(num_keys=int(sys.argv[2]), offset=sys.argv[3])
-        con.play_song(sys.argv[1])
+    con = Control(num_keys=64, offset=0)
+    con.reset_pins()
+    while True:
+        inp = input()
+        if inp == "r":
+            con.reset_pins()
+        else:
+            con.output(int(inp), "HIGH")
+            sleep(2)
+            con.output(int(inp), "LOW")

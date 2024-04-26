@@ -3,7 +3,7 @@ import os
 
 
 # CHANGE ON RASPI PLATFORM
-downloads_path = "/home/will/Downloads"
+downloads_path = "/home/piano/Downloads"
 
 def update_list(search_value):
     song_response_list = []

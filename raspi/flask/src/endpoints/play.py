@@ -7,7 +7,7 @@ sys.path.insert(0, '../')
 from control.control import Control
 
 
-json_dir = "/home/will/MIDI/"
+json_dir = "/home/piano/MIDI/"
 json_name = "mid2jsn.json"
 #json_name = "beat.json"
 json_path = json_dir + json_name
@@ -19,7 +19,7 @@ PID = None
 class Play(Resource):
     def __init__(self):
         super().__init__()
-        self.con = Control(num_keys=64, offset=0)
+        self.con = Control(num_keys=80, offset=0)
 
     def play_song_process(self, json_path):
         self.con.play_song(json_path)

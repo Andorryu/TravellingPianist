@@ -6,7 +6,7 @@ sys.path.insert(0, '../')
 from mapping.mapping import Map
 
 
-downloads_path = '/home/will/Downloads/'
+downloads_path = '/home/piano/Downloads/'
 
 def find_song(song_name):
     files = os.listdir(downloads_path)
@@ -35,7 +35,7 @@ class Upload(Resource):
         else:
             mapping = Map(song_path)
 
-            file_name = f'/home/will/MIDI/mid2jsn.json'
+            file_name = f'/home/piano/MIDI/mid2jsn.json'
             with open(file_name, 'w') as file:
                 json.dump(mapping, file, indent=4)
 

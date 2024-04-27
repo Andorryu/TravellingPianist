@@ -19,7 +19,7 @@ PID = None
 class Play(Resource):
     def __init__(self):
         super().__init__()
-        self.con = Control(num_keys=80, offset=0)
+        self.con = Control(num_keys=64, offset=0)
 
     def play_song_process(self, json_path):
         self.con.play_song(json_path)

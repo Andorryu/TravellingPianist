@@ -29,11 +29,7 @@ class Control:
         for i in range(num_keys): # create pins "0", "1", ..., f"{num_pins-1}"
             chips[(i//8)].pin_mode(f"{i%8}", "OUTPUT")
 
-        for i in range(num_keys):
-            chips[(i//8)].write(f"{i%8}", "LOW")
-
         self.chips = chips
-        self.reset_pins()
 
     def parse_json(self, json_path):
         file = open(json_path, "r")
@@ -77,14 +73,14 @@ class Control:
 
 # testing
 if __name__ == "__main__":
-
-    con = Control(num_keys=64, offset=0)
+    con = Control(num_keys=88, offset=0)
     con.reset_pins()
     while True:
         inp = input()
         if inp == "r":
             con.reset_pins()
-        else:
-            con.output(int(inp), "HIGH")
-            sleep(2)
-            con.output(int(inp), "LOW")
+        elif inp.isnumeric():
+            if int(inp) >= 0 and int(inp) < con.num_keys:
+                con.output(int(inp), "HIGH")
+                sleep(2)
+                con.output(int(inp), "LOW")

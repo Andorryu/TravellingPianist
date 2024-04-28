@@ -4,30 +4,27 @@ import math
 import sys
 import pcf8574_io as pcf
 import json
+import RPi.GPIO as GPIO
 
 # NOTE: FOR OCTAVE TEST, MAKE OFFSET = 39 AND NUM_KEYS = 12
 
 class Control:
     def __init__(self, num_keys=88, offset=0):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
         self.offset = offset
         self.num_keys = num_keys
-        num_chips =  math.ceil(num_keys/8) # number of pcf boards to use
+        num_chips =  8 if num_keys > 64 else math.ceil(num_keys/8) # number of pcf boards to use
 
-        chips = [pcf.PCF(i) for i in range(0x20, 0x20+(8 if num_chips > 8 else num_chips))]
-
-        for chip in chips:
-            chip.set_i2cBus(1)
-
-        # remainder chips if they exist
-        if num_chips > 8:
-            temp = [pcf.PCF(i) for i in range(0x20, 0x20+(num_chips-8))]
-            for chip in temp:
-                chip.set_i2cBus(0)
-            chips += temp
+        chips = [pcf.PCF(i) for i in range(0x20, 0x20+num_chips)]
 
         # init pins
-        for i in range(num_keys): # create pins "0", "1", ..., f"{num_pins-1}"
+        for i in range(64 if num_keys > 64 else num_keys): # create pins "0", "1", ..., f"{num_pins-1}"
             chips[(i//8)].pin_mode(f"{i%8}", "OUTPUT")
+
+        # remainder on gpio pins
+        for i in range(4, 28):
+            GPIO.setup(i, GPIO.OUT)
 
         self.chips = chips
 
@@ -42,7 +39,11 @@ class Control:
     def output(self, note, high_low: str):
         note -= self.offset
         #if note < self.num_keys and note >= 0: #skip notes that aren't in window
-        self.chips[note//8].write(f"{note%8}", high_low)
+        if note < 64:
+            self.chips[note//8].write(f"{note%8}", high_low)
+        elif note < 88:
+            GPIO.output(note-60, GPIO.HIGH if high_low == "HIGH" else GPIO.LOW)
+
 
     def play_song(self, song_path):
         song_data = self.parse_json(song_path)
